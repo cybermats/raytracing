@@ -5,7 +5,7 @@ class Intersection;
 
 class IMaterial
 {
-
+public:
     virtual Color shade(const Intersection& intersection) = 0;
 
 };

@@ -18,7 +18,7 @@ void ImageWriter::savePNG(const std::string &filename) const {
     {
         for(size_t i = 0; i < 4; ++i)
         {
-            auto temp = (color[i] * 127) + 128;
+            auto temp = color[i] * 255.0;
             auto c = std::max(0.0, std::min(255.0, temp));
             localBuffer.push_back((unsigned char)(c));
         }

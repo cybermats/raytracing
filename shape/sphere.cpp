@@ -1,9 +1,16 @@
 #include "sphere.h"
 #include "../ray.h"
 #include "../intersection.h"
+#include "../material/imaterial.h"
+
+Sphere::Sphere(Vec3d origin, double radius, IMaterial* material)
+        : _origin(std::move(origin))
+        , _radius(radius)
+        , _material(material)
+{}
 
 
-double Sphere::intersect(const Ray &ray) {
+double Sphere::intersect(const Ray &ray) const {
 
     Vec3d o = ray.origin();
     Vec3d d = ray.direction();
@@ -28,9 +35,13 @@ double Sphere::intersect(const Ray &ray) {
     return t;
 }
 
-void Sphere::populate_intersection(Intersection &intersection) {
+void Sphere::populate_intersection(Intersection &intersection) const {
     assert(intersection.t() >= 0);
     double inv_radius = 1 / _radius;
     intersection.normal((intersection.point() - _origin) * inv_radius);
     intersection.shape(this);
+}
+
+IMaterial* Sphere::material() const {
+    return _material;
 }

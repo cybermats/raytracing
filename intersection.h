@@ -47,12 +47,12 @@ public:
         _point = p;
     }
 
-    IGeometry* shape() const
+    const IGeometry* shape() const
     {
         return _shape;
     }
 
-    void shape(IGeometry* shape)
+    void shape(const IGeometry* shape)
     {
         _shape = shape;
     }
@@ -68,6 +68,6 @@ private:
     double _t;
     Vec3d _normal;
     Vec3d _point;
-    IGeometry* _shape;
+    const IGeometry* _shape;
 
 };

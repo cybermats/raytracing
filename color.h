@@ -53,3 +53,18 @@ struct Color
     double b;
     double a;
 };
+
+inline Color operator*(const Color& c, double v)
+{
+    return Color(c.r * v, c.g * v, c.b * v, c.a);
+}
+
+inline Color operator*(double v, const Color& c)
+{
+    return Color(c.r * v, c.g * v, c.b * v, c.a);
+}
+
+inline Color operator+(const Color& l, const Color& r)
+{
+    return Color(l.r + r.r, l.g + r.g, l.b + r.g, l.a * r.a);
+}

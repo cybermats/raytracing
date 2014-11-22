@@ -10,12 +10,12 @@ class ImageBuffer
 public:
     ImageBuffer(int width, int height)
             : _resolution(width, height)
-            , _buffer(_resolution.x * _resolution.y, Color(0, 0, 0))
+            , _buffer(_resolution.x * _resolution.y, Color(0, 0, 0, 0))
     {}
 
     ImageBuffer(Vec2i resolution)
             : _resolution(resolution)
-            , _buffer(_resolution.x * _resolution.y, Color(0, 0, 0))
+            , _buffer(_resolution.x * _resolution.y, Color(0, 0, 0, 0))
     {}
 
     void setPixel(const Color& color, const Vec2i& pixel)

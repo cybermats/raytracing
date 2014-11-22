@@ -7,7 +7,7 @@ set(GTEST /Users/mats/Documents/Code/gtest-1.7.0)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 
-set(SOURCE_FILES shape/sphere.cpp imagewriter.cpp camera.cpp lodepng.cpp)
+set(SOURCE_FILES shape/sphere.cpp imagewriter.cpp camera.cpp pointlight.cpp lodepng.cpp)
 add_executable(raytracing main.cpp ${SOURCE_FILES})
 add_executable(raygtest gtest.cpp ${SOURCE_FILES})
 
