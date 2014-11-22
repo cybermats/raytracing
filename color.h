@@ -6,6 +6,14 @@
 
 struct Color
 {
+    static Color White;
+    static Color Black;
+    static Color Red;
+    static Color Green;
+    static Color Blue;
+    static Color Teal;
+    static Color Orange;
+
     Color() {}
 
     Color(double r, double g, double b)
@@ -68,3 +76,4 @@ inline Color operator+(const Color& l, const Color& r)
 {
     return Color(l.r + r.r, l.g + r.g, l.b + r.g, l.a * r.a);
 }
+

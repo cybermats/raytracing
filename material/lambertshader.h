@@ -22,16 +22,8 @@ public:
         Color output(0, 0, 0, 1);
         for(const auto& light : _scene->lights())
         {
-            Vec3d lightDir = light->direction(intersection.point());
-            Ray ray(intersection.point() + 0.00000001 * lightDir, lightDir);
-
-            if(_scene->hit(ray, 10))
-                continue;
-
-
-
-            Color lightColor = light->color();
-            Vec3d direction = normalize(light->direction(intersection.point()));
+            Color lightColor = light->shade(intersection.point());
+            Vec3d direction = light->direction(intersection.point());
             Color shadeColor = lightColor * _coefficient * std::max(0.0, dot(direction, intersection.normal()));
             output = output + shadeColor;
         }

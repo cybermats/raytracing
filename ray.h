@@ -15,7 +15,7 @@ public:
             , _dU(dU)
             , _dV(dV)
     {
-        assert(SIMILAR(length(_direction), 1.0));
+        assert(similar(length(_direction), 1.0));
     }
 
     Ray(Vec3d origin, Vec3d direction)
@@ -25,7 +25,7 @@ public:
             , _dU(0, 0, 0)
             , _dV(0, 0, 0)
     {
-        assert(SIMILAR(length(_direction), 1.0));
+        assert(similar(length(_direction), 1.0));
     }
 
     const Vec3d& origin() const

@@ -14,7 +14,7 @@ Camera::Camera(Vec3d position, Vec3d view, const Vec3d& up, Vec2i resolution, do
 
 std::vector<Ray> Camera::rays() const
 {
-    Vec3d scanlineStart = _position +
+    Vec3d scanlineStart = //_position +
             _w -
             (_resolution.x/2) * _dX * _u +
             (_resolution.y/2) * _dY * _v +

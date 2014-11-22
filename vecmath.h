@@ -1,6 +1,7 @@
 #pragma once
 
 #include "vector.h"
+#include "utils.h"
 #include <math.h>
 
 template<std::size_t Dim, class T>
@@ -121,5 +122,60 @@ Vec<Dim, T> normalize(const Vec<Dim, T>& v)
 {
     T len = length(v);
     return v / len;
+}
+
+template<std::size_t Dim>
+bool similar(const Vec<Dim, double>& a, const Vec<Dim, double>& b)
+{
+    for(std::size_t i = 0; i < Dim; ++i)
+    {
+        if(!similar(a[i], b[i]))
+            return false;
+    }
+    return true;
+}
+
+template<std::size_t Dim, class T>
+bool operator==(const Vec<Dim, T>& a, const Vec<Dim, T>& b)
+{
+    for(std::size_t i = 0; i < Dim; ++i)
+    {
+        if(a[i] != b[i])
+            return false;
+    }
+    return true;
+}
+
+template<std::size_t Dim>
+bool operator==(const Vec<Dim, double>& a, const Vec<Dim, double>& b)
+{
+    for(std::size_t i = 0; i < Dim; ++i)
+    {
+        if(!similar(a[i], b[i]))
+            return false;
+    }
+    return true;
+}
+
+template<std::size_t Dim, class T>
+bool operator!=(const Vec<Dim, T>& a, const Vec<Dim, T>& b)
+{
+    for(std::size_t i = 0; i < Dim; ++i)
+    {
+        if(a[i] == b[i])
+            return false;
+    }
+    return true;
+}
+
+template<std::size_t Dim>
+bool operator!=(const Vec<Dim, double>& a, const Vec<Dim, double>& b)
+{
+    for(std::size_t i = 0; i < Dim; ++i)
+    {
+        if(similar(a[i], b[i]))
+            return false;
+    }
+    return true;
 }
 

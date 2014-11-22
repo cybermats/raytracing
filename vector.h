@@ -106,14 +106,6 @@ public:
         return _a[idx];
     }
 
-    bool operator==(const Vec& other) const {
-        return _a == other._a;
-    }
-
-    bool operator!=(const Vec& other) const {
-        return _a != other._a;
-    }
-
     friend std::ostream &operator<<(std::ostream &stream, const Vec &v) {
         stream << "Vec<" << typeid(T).name() << ">(" << v._a << ")";
         return stream;
