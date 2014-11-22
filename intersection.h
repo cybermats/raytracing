@@ -2,7 +2,7 @@
 
 #include "vector.h"
 #include "ray.h"
-#include "igeometry.h"
+#include "shape/igeometry.h"
 
 #include <ostream>
 

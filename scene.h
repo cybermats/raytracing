@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <vector>
-#include "igeometry.h"
+#include "shape/igeometry.h"
 #include "intersection.h"
 
 class Scene

@@ -4,7 +4,7 @@
 #include "imagebuffer.h"
 #include "imagewriter.h"
 #include "camera.h"
-#include "sphere.h"
+#include "shape/sphere.h"
 #include "scene.h"
 #include "imaterial.h"
 

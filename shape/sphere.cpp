@@ -1,6 +1,6 @@
 #include "sphere.h"
-#include "ray.h"
-#include "intersection.h"
+#include "../ray.h"
+#include "../intersection.h"
 
 
 double Sphere::intersect(const Ray &ray) {

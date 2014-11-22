@@ -1,7 +1,7 @@
 #pragma once
 
 #include "igeometry.h"
-#include "vector.h"
+#include "../vector.h"
 
 class Sphere : public IGeometry
 {
