@@ -1,9 +1,9 @@
 #include "plane.h"
-#include "../material/imaterial.h"
+#include "../shader/ishader.h"
 
 
 
-Plane::Plane(Vec3d normal, double location, IMaterial *material)
+Plane::Plane(Vec3d normal, double location, IShader *material)
 : _normal(normal), _location(location), _material(material) {
 }
 
@@ -20,6 +20,6 @@ void Plane::populate_intersection(Intersection &intersection) const {
     intersection.shape(this);
 }
 
-IMaterial *Plane::material() const {
+IShader *Plane::material() const {
     return _material;
 }

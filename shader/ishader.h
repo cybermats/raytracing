@@ -3,7 +3,7 @@
 
 class Intersection;
 
-class IMaterial
+class IShader
 {
 public:
     virtual Color shade(const Intersection& intersection) = 0;

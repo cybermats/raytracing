@@ -1,9 +1,9 @@
 #include "sphere.h"
 #include "../ray.h"
 #include "../intersection.h"
-#include "../material/imaterial.h"
+#include "../shader/ishader.h"
 
-Sphere::Sphere(Vec3d origin, double radius, IMaterial* material)
+Sphere::Sphere(Vec3d origin, double radius, IShader * material)
         : _origin(std::move(origin))
         , _radius(radius)
         , _material(material)
@@ -42,6 +42,6 @@ void Sphere::populate_intersection(Intersection &intersection) const {
     intersection.shape(this);
 }
 
-IMaterial* Sphere::material() const {
+IShader * Sphere::material() const {
     return _material;
 }

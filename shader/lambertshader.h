@@ -1,6 +1,6 @@
 #pragma once
 
-#include "imaterial.h"
+#include "ishader.h"
 #include "../vector.h"
 #include "../vecmath.h"
 #include "../color.h"
@@ -8,7 +8,7 @@
 #include "../scene.h"
 
 
-class LambertShader : public IMaterial
+class LambertShader : public IShader
 {
 public:
 

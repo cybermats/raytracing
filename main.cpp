@@ -7,8 +7,8 @@
 #include "shape/sphere.h"
 #include "shape/plane.h"
 #include "scene.h"
-#include "material/imaterial.h"
-#include "material/lambertshader.h"
+#include "shader/ishader.h"
+#include "shader/lambertshader.h"
 #include "pointlight.h"
 #include "utils.h"
 

@@ -2,11 +2,11 @@
 
 #include "vector.h"
 #include "ray.h"
-#include "shape/igeometry.h"
+#include "shape/ishape.h"
 
 #include <ostream>
 
-class IGeometry;
+class IShape;
 
 class Intersection
 {
@@ -47,12 +47,12 @@ public:
         _point = p;
     }
 
-    const IGeometry* shape() const
+    const IShape* shape() const
     {
         return _shape;
     }
 
-    void shape(const IGeometry* shape)
+    void shape(const IShape* shape)
     {
         _shape = shape;
     }
@@ -68,6 +68,6 @@ private:
     double _t;
     Vec3d _normal;
     Vec3d _point;
-    const IGeometry* _shape;
+    const IShape* _shape;
 
 };

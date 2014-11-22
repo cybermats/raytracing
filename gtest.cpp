@@ -136,12 +136,12 @@ TEST(Scene, Basic)
     EXPECT_FALSE((bool)intersection);
 
     auto sphere = new Sphere(Vec3d(4, 0, 0), 1, nullptr);
-    scene.add_shape(std::unique_ptr<IGeometry>(sphere));
+    scene.add_shape(std::unique_ptr<IShape>(sphere));
     intersection = scene.intersect(ray);
     EXPECT_TRUE((bool)intersection);
 
     auto sphere2 = new Sphere(Vec3d(-4, 0, 0), 1, nullptr);
-    scene.add_shape(std::unique_ptr<IGeometry>(sphere2));
+    scene.add_shape(std::unique_ptr<IShape>(sphere2));
     intersection = scene.intersect(ray);
     EXPECT_TRUE((bool)intersection);
     EXPECT_EQ(sphere, intersection->shape());

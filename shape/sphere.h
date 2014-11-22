@@ -1,25 +1,25 @@
 #pragma once
 
-#include "igeometry.h"
+#include "ishape.h"
 #include "../vector.h"
 
 
-class IMaterial;
+class IShader;
 
-class Sphere : public IGeometry
+class Sphere : public IShape
 {
 public:
-    Sphere(Vec3d origin, double radius, IMaterial* material);
+    Sphere(Vec3d origin, double radius, IShader * material);
 
     virtual double intersect(const Ray &ray) const override;
 
     virtual void populate_intersection(Intersection &intersection) const override;
 
-    virtual IMaterial* material() const override;
+    virtual IShader * material() const override;
 
 private:
     Vec3d _origin;
     double _radius;
-    IMaterial* _material;
+    IShader * _material;
 };
 

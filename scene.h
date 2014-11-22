@@ -1,6 +1,6 @@
 #pragma once
 
-#include "shape/igeometry.h"
+#include "shape/ishape.h"
 #include "intersection.h"
 #include "ilightsource.h"
 
@@ -10,7 +10,7 @@
 class Scene
 {
 public:
-    void add_shape(std::unique_ptr<IGeometry> shape)
+    void add_shape(std::unique_ptr<IShape> shape)
     {
         _shapes.push_back(std::move(shape));
     }
@@ -22,7 +22,7 @@ public:
 
     std::unique_ptr<Intersection> intersect(const Ray& ray) const
     {
-        IGeometry* nearestHit = nullptr;
+        IShape* nearestHit = nullptr;
         double t_min = std::numeric_limits<double>::max();
         for(auto const& shape : _shapes)
         {
@@ -66,6 +66,6 @@ public:
 
 
 private:
-    std::vector<std::unique_ptr<IGeometry>> _shapes;
+    std::vector<std::unique_ptr<IShape>> _shapes;
     std::vector<std::unique_ptr<ILightSource>> _lights;
 };
