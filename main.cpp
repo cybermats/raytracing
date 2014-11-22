@@ -6,7 +6,7 @@
 #include "camera.h"
 #include "shape/sphere.h"
 #include "scene.h"
-#include "imaterial.h"
+#include "material/imaterial.h"
 
 #include <string>
 
