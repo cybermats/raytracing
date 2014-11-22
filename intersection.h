@@ -2,8 +2,11 @@
 
 #include "vector.h"
 #include "ray.h"
+#include "igeometry.h"
 
 #include <ostream>
+
+class IGeometry;
 
 class Intersection
 {
@@ -44,6 +47,16 @@ public:
         _point = p;
     }
 
+    IGeometry* shape() const
+    {
+        return _shape;
+    }
+
+    void shape(IGeometry* shape)
+    {
+        _shape = shape;
+    }
+
     friend std::ostream& operator<<(std::ostream& stream, const Intersection& i)
     {
         stream << "Intersection(ray: " << i._ray << ", t: " << i._t << ", normal: " << i._normal << ", point: " << i._point << ")";
@@ -55,5 +68,6 @@ private:
     double _t;
     Vec3d _normal;
     Vec3d _point;
+    IGeometry* _shape;
 
 };

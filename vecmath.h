@@ -3,46 +3,123 @@
 #include "vector.h"
 #include <math.h>
 
-template<class T>
-Vec3<T> operator+(const Vec3<T>& l, const Vec3<T>& r)
+template<std::size_t Dim, class T>
+Vec<Dim, T> operator+(const Vec<Dim, T>& l, const Vec<Dim, T>& r)
 {
-    return Vec3<T>(l.x + r.x, l.y + r.y, l.z + r.z);
+    std::array<T, Dim> temp;
+    for(std::size_t i = 0; i < Dim; ++i)
+        temp[i] = l[i] + r[i];
+    return Vec<Dim, T>(std::move(temp));
 }
 
-template<class T>
-Vec3<T> operator-(const Vec3<T>& l, const Vec3<T>& r)
+template<std::size_t Dim, class T>
+Vec<Dim, T> operator-(const Vec<Dim, T>& l, const Vec<Dim, T>& r)
 {
-    return Vec3<T>(l.x - r.x, l.y - r.y, l.z - r.z);
-}
-
-template<class T>
-Vec3<T> operator*(const Vec3<T>& v, double d)
-{
-    return Vec3<T>(v.x * d, v.y * d, v.z * d);
-}
-
-template<class T>
-Vec3<T> operator*(double d, const Vec3<T>& v)
-{
-    return Vec3<T>(v.x * d, v.y * d, v.z * d);
+    std::array<T, Dim> temp;
+    for(std::size_t i = 0; i < Dim; ++i)
+        temp[i] = l[i] - r[i];
+    return Vec<Dim, T>(std::move(temp));
 }
 
 
-template<class T>
-T length(const Vec3<T>& v)
+template<std::size_t Dim, class T>
+Vec<Dim, T>& operator+=(Vec<Dim, T>& l, const Vec<Dim, T>& r)
 {
-    return sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
+    for(std::size_t i = 0; i < Dim; ++i)
+        l[i] += r[i];
+    return l;
+}
+
+template<std::size_t Dim, class T>
+Vec<Dim, T>& operator-=(Vec<Dim, T>& l, const Vec<Dim, T>& r)
+{
+    for(std::size_t i = 0; i < Dim; ++i)
+        l[i] -= r[i];
+    return l;
+}
+
+
+template<std::size_t Dim, class T>
+Vec<Dim, T> operator*(const Vec<Dim, T>& v, double d)
+{
+    std::array<T, Dim> temp;
+    for(std::size_t i = 0; i < Dim; ++i)
+        temp[i] = v[i] * d;
+    return Vec<Dim, T>(std::move(temp));
+}
+
+template<std::size_t Dim, class T>
+Vec<Dim, T> operator*(double d, const Vec<Dim, T>& v)
+{
+    std::array<T, Dim> temp;
+    for(std::size_t i = 0; i < Dim; ++i)
+        temp[i] = v[i] * d;
+    return Vec<Dim, T>(std::move(temp));
+}
+
+template<std::size_t Dim, class T>
+Vec<Dim, T>& operator*=(Vec<Dim, T>& v, double d)
+{
+    for(std::size_t i = 0; i < Dim; ++i)
+        v[i] *= d;
+    return v;
+}
+
+template<std::size_t Dim, class T>
+Vec<Dim, T> operator/(const Vec<Dim, T>& v, double d)
+{
+    std::array<T, Dim> temp;
+    for(std::size_t i = 0; i < Dim; ++i)
+        temp[i] = v[i] / d;
+    return Vec<Dim, T>(std::move(temp));
+}
+
+template<std::size_t Dim, class T>
+Vec<Dim, T>& operator/=(Vec<Dim, T>& v, double d)
+{
+    for(std::size_t i = 0; i < Dim; ++i)
+        v[i] /= d;
+    return v;
+}
+
+
+template<std::size_t Dim, class T>
+inline T length(const Vec<Dim, T>& v)
+{
+    return sqrt(length2(v));
+}
+
+template<std::size_t Dim, class T>
+inline T length2(const Vec<Dim, T>& v)
+{
+    T len = 0;
+    for(std::size_t i = 0; i < Dim; ++i)
+        len += v[i]*v[i];
+    return len;
+}
+
+template<std::size_t Dim, class T>
+T dot(const Vec<Dim, T>& l, const Vec<Dim, T>& r)
+{
+    T len = 0;
+    for(std::size_t i = 0; i < Dim; ++i)
+        len += l[i]*r[i];
+    return len;
 }
 
 template<class T>
-T length2(const Vec3<T>& v)
+Vec<3, T> cross(const Vec<3, T>& a, const Vec<3, T>& b)
 {
-    return v.x*v.x + v.y*v.y + v.z*v.z;
+    return Vec<3, T>(
+            a.y*b[2] - a[2]*b[1],
+            a[2]*b[0] - a[0]*b[2],
+            a[0]*b[1] - a[1]*b[0]);
 }
 
-template<class T>
-T dot(const Vec3<T>& l, const Vec3<T>& r)
+template<std::size_t Dim, class T>
+Vec<Dim, T> normalize(const Vec<Dim, T>& v)
 {
-    return (l.x * r.x) + (l.y * r.y) + (l.z * r.z);
+    T len = length(v);
+    return v / len;
 }
 
