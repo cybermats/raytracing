@@ -1,6 +1,5 @@
 #include "imagewriter.h"
 #include "imagebuffer.h"
-#include <algorithm>
 
 #include "lodepng.h"
 

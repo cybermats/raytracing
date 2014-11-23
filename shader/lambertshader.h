@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ishader.h"
+#include "imaterial.h"
 #include "../vector.h"
 #include "../vecmath.h"
 #include "../color.h"
@@ -12,27 +13,18 @@ class LambertShader : public IShader
 {
 public:
 
-    LambertShader(Scene* scene, Color color, double coefficient)
+    LambertShader(Scene* scene, IMaterial* material, double coefficient)
             : _scene(scene)
-            , _color(color)
+            , _material(material)
             , _coefficient(coefficient) {
     }
 
-    virtual Color shade(const Intersection &intersection) override {
-        Color output(0, 0, 0, 1);
-        for(const auto& light : _scene->lights())
-        {
-            Color lightColor = light->shade(intersection.point());
-            Vec3d direction = light->direction(intersection.point());
-            Color shadeColor = lightColor * _coefficient * std::max(0.0, dot(direction, intersection.normal()));
-            output = output + shadeColor;
-        }
-        return output;
-    }
+    virtual Color shade(const Intersection &intersection, std::vector<Ray>& secondaryRays) const override;
+
 
 private:
     Scene* _scene;
-    Color _color;
+    IMaterial* _material;
     double _coefficient;
 
 };

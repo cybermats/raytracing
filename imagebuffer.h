@@ -23,6 +23,21 @@ public:
         _buffer[_resolution.x * pixel.y + pixel.x] = color;
     }
 
+    void addPixel(const Color& color, const Vec2i& pixel)
+    {
+        _buffer[_resolution.x * pixel.y + pixel.x] += color;
+    }
+
+    inline Color& operator()(int x, int y)
+    {
+        return _buffer[_resolution.x * y + x];
+    }
+
+    inline const Color& operator()(int x, int y) const
+    {
+        return _buffer[_resolution.x * y + x];
+    }
+
     int height() const
     {
         return _resolution.y;
@@ -33,12 +48,46 @@ public:
         return _resolution.x;
     }
 
+    class const_iterator
+    {
+    public:
+        const_iterator() {}
+
+        const_iterator(std::vector<Color>::const_iterator it)
+                : _iterator(it)
+        {}
+
+        bool operator==(const const_iterator& other)
+        {
+            return _iterator == other._iterator;
+        }
+
+        bool operator!=(const const_iterator& other)
+        {
+            return _iterator != other._iterator;
+        }
+
+        const_iterator& operator++()
+        {
+            ++_iterator;
+            return *this;
+        }
+
+        const Color& operator*() const
+        {
+            return *_iterator;
+        }
+
+    private:
+        std::vector<Color>::const_iterator _iterator;
+    };
+
     class iterator
     {
     public:
         iterator() {}
 
-        iterator(std::vector<Color>::const_iterator it)
+        iterator(std::vector<Color>::iterator it)
                 : _iterator(it)
         {}
 
@@ -58,23 +107,45 @@ public:
             return *this;
         }
 
+        iterator operator++(int)
+        {
+            auto temp = iterator(_iterator);
+            ++_iterator;
+            return temp;
+        }
+
         const Color& operator*() const
         {
             return *_iterator;
         }
 
+        Color& operator*()
+        {
+            return *_iterator;
+        }
+
     private:
-        std::vector<Color>::const_iterator _iterator;
+        std::vector<Color>::iterator _iterator;
     };
 
-    iterator begin() const
+    iterator begin()
     {
         return iterator(_buffer.begin());
     }
 
-    iterator end() const
+    const_iterator begin() const
+    {
+        return const_iterator(_buffer.begin());
+    }
+
+    iterator end()
     {
         return iterator(_buffer.end());
+    }
+
+    const_iterator end() const
+    {
+        return const_iterator(_buffer.end());
     }
 
 private:

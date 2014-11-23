@@ -6,7 +6,7 @@
 #include "shape/sphere.h"
 #include "scene.h"
 #include "camera.h"
-
+#include "supersampler.h"
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
@@ -198,5 +198,71 @@ TEST(Double, AlmostEqual)
 
     EXPECT_TRUE(similar(smallestDenormal, -smallestDenormal));
     EXPECT_TRUE(similar(-smallestDenormal, smallestDenormal));
+}
+
+TEST(SuperSampler, Sensible)
+{
+    SuperSampler sampler(2, false);
+    std::vector<Ray> rays;
+    Vec3d origin(0, 0, 0);
+    Vec3d direction(0, 0, -1);
+    Vec2i pixel(0, 0);
+
+    Vec3d dU(0.5, 0, 0);
+    Vec3d dV(0, 0.5, 0);
+    Color importance = Color::White;
+
+    Ray ray(origin, direction, pixel, dU, dV, importance);
+    rays.push_back(ray);
+
+    auto superRays = sampler.generate(rays);
+    EXPECT_EQ(4, superRays.size());
+    EXPECT_EQ(normalize(Vec3d(-0.25, -0.25, -1)), superRays[0].direction());
+    EXPECT_EQ(normalize(Vec3d(0.25, -0.25, -1)), superRays[1].direction());
+    EXPECT_EQ(normalize(Vec3d(-0.25, 0.25, -1)), superRays[2].direction());
+    EXPECT_EQ(normalize(Vec3d(0.25, 0.25, -1)), superRays[3].direction());
+}
+
+TEST(Color, Equality)
+{
+    Color c(1, 2, 3, 4);
+    Color o(5, 6, 7, 8);
+    EXPECT_EQ(c, c);
+    EXPECT_NE(c, o);
+    EXPECT_NE(Color(1, 2, 3, 0), c);
+    EXPECT_NE(Color(1, 2, 0, 4), c);
+    EXPECT_NE(Color(1, 0, 3, 4), c);
+    EXPECT_NE(Color(0, 2, 3, 4), c);
+}
+
+TEST(Color, Operators)
+{
+    Color r(1, 0, 0, 1);
+    Color g(0, 1, 0, 1);
+    Color b(0, 0, 1, 1);
+    Color a(0, 0, 0, 1);
+    Color w(1, 1, 1, 1);
+    Color bl(0, 0, 0, 1);
+    Color em(0, 0, 0, 0);
+
+    EXPECT_EQ(Color(1, 0, 0, 2), r + bl);
+    EXPECT_EQ(Color(0, 1, 0, 2), g + bl);
+    EXPECT_EQ(Color(0, 0, 1, 2), b + bl);
+    EXPECT_EQ(Color(0, 0, 0, 2), a + bl);
+
+    EXPECT_EQ(Color(1, 0, 0, 1), r * w);
+    EXPECT_EQ(Color(0, 1, 0, 1), g * w);
+    EXPECT_EQ(Color(0, 0, 1, 1), b * w);
+    EXPECT_EQ(Color(0, 0, 0, 1), a * w);
+
+    EXPECT_EQ(Color(0.5, 0, 0, 0.5), r * 0.5);
+    EXPECT_EQ(Color(0, 0.5, 0, 0.5), g * 0.5);
+    EXPECT_EQ(Color(0, 0, 0.5, 0.5), b * 0.5);
+    EXPECT_EQ(Color(0, 0, 0, 0.5), a * 0.5);
+
+    EXPECT_EQ(Color(0.5, 0, 0, 0.5), 0.5 * r);
+    EXPECT_EQ(Color(0, 0.5, 0, 0.5), 0.5 * g);
+    EXPECT_EQ(Color(0, 0, 0.5, 0.5), 0.5 * b);
+    EXPECT_EQ(Color(0, 0, 0, 0.5), 0.5 * a);
 
 }

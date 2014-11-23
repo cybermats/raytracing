@@ -1,10 +1,10 @@
 #include "camera.h"
 
-Camera::Camera(Vec3d position, Vec3d view, const Vec3d& up, Vec2i resolution, double fov, double aspect)
+Camera::Camera(Vec3d position, const Vec3d& view, const Vec3d& up, Vec2i resolution, double fov, double aspect)
 : _position(std::move(position))
-, _u(cross(view, up))
-, _v(cross(_u, view))
-, _w(std::move(view))
+, _u(normalize(cross(view, up)))
+, _v(normalize(cross(_u, view)))
+, _w(normalize(view))
 , _resolution(resolution)
 , _fov(fov)
 , _aspect(aspect)
@@ -35,7 +35,7 @@ std::vector<Ray> Camera::rays() const
 
         for(int x = 0; x < _resolution.x; ++x)
         {
-            Ray ray(_position, normalize(pixelCenter), pixel, dU, dV);
+            Ray ray(_position, normalize(pixelCenter), pixel, dU, dV, Color::White);
             rays.push_back(ray);
 
             pixelCenter += dU;

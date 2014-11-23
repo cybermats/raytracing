@@ -57,6 +57,16 @@ public:
         _shape = shape;
     }
 
+    const Vec2d& uv() const
+    {
+        return _uv;
+    }
+
+    void uv(const Vec2d& uv)
+    {
+        _uv = uv;
+    }
+
     friend std::ostream& operator<<(std::ostream& stream, const Intersection& i)
     {
         stream << "Intersection(ray: " << i._ray << ", t: " << i._t << ", normal: " << i._normal << ", point: " << i._point << ")";
@@ -69,5 +79,5 @@ private:
     Vec3d _normal;
     Vec3d _point;
     const IShape* _shape;
-
+    Vec2d _uv;
 };

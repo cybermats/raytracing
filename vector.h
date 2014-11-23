@@ -60,63 +60,58 @@ class Vec<3, T>
 {
 public:
     Vec()
-            : _a()
-            , x(_a[0])
-            , y(_a[1])
-            , z(_a[2])
     {}
 
     Vec(T x, T y, T z)
-            : _a{x, y, z}
-            , x(_a[0])
-            , y(_a[1])
-            , z(_a[2])
-    {}
-
-    Vec(std::array<T, 3>&& arr)
-            : _a(std::move(arr))
-            , x(_a[0])
-            , y(_a[1])
-            , z(_a[2])
-    {}
-
-    Vec(const Vec& other)
-            : _a(other._a)
-            , x(_a[0])
-            , y(_a[1])
-            , z(_a[2])
+            : x(x)
+            , y(y)
+            , z(z)
     {}
 
     Vec& operator=(Vec other)
     {
-        _a = std::move(other._a);
-        x = _a[0];
-        y = _a[1];
-        z = _a[2];
+        x = other.x;
+        y = other.y;
+        z = other.z;
         return *this;
     }
 
     T& operator[](size_t idx) {
         assert(idx < 3);
-        return _a[idx];
+        switch (idx)
+        {
+            case 0:
+                return x;
+            case 1:
+                return y;
+            case 2:
+            default:
+                return z;
+        }
     }
 
     const T& operator[](size_t idx) const {
         assert(idx < 3);
-        return _a[idx];
+        switch (idx)
+        {
+            case 0:
+                return x;
+            case 1:
+                return y;
+            case 2:
+            default:
+                return z;
+        }
     }
 
     friend std::ostream &operator<<(std::ostream &stream, const Vec &v) {
-        stream << "Vec<" << typeid(T).name() << ">(" << v._a << ")";
+        stream << "Vec<" << typeid(T).name() << ">(" << v.x << ", " << v.y << ", "  << v.z << ")";
         return stream;
     }
 
-    T& x;
-    T& y;
-    T& z;
-
-private:
-    std::array<T, 3> _a;
+    T x;
+    T y;
+    T z;
 };
 
 
@@ -125,65 +120,45 @@ class Vec<2, T>
 {
 public:
     Vec()
-            : _a()
-            , x(_a[0])
-            , y(_a[1])
     {}
 
     Vec(T x, T y)
-            : _a{x, y}
-            , x(_a[0])
-            , y(_a[1])
+            : x(x)
+            , y(y)
     {}
 
-    Vec(std::array<T, 2>&& arr)
-            : _a(std::move(arr))
-            , x(_a[0])
-            , y(_a[1])
-    {}
-
-    Vec(const Vec& other)
-            : _a(other._a)
-            , x(_a[0])
-            , y(_a[1])
-    {}
-
-    Vec& operator=(Vec other)
-    {
-        _a = std::move(other._a);
-        x = _a[0];
-        y = _a[1];
-        return *this;
-    }
-
-    T& operator[](size_t idx) {
+    inline T& operator[](size_t idx) {
         assert(idx < 2);
-        return _a[idx];
+        switch (idx)
+        {
+            case 0:
+                return x;
+            case 1:
+            default:
+                return y;
+        }
     }
 
-    const T& operator[](size_t idx) const {
+    const inline T& operator[](size_t idx) const {
         assert(idx < 2);
-        return _a[idx];
-    }
-
-    bool operator==(const Vec& other) const {
-        return _a == other._a;
-    }
-
-    bool operator!=(const Vec& other) const {
-        return _a != other._a;
+        switch (idx)
+        {
+            case 0:
+                return x;
+            case 1:
+            default:
+                return y;
+        }
     }
 
     friend std::ostream &operator<<(std::ostream &stream, const Vec &v) {
-        stream << "Vec<" << typeid(T).name() << ">(" << v._a << ")";
+        stream << "Vec<" << typeid(T).name() << ">(" << v.x << ", " << v.y << ")";
         return stream;
     }
 
-    T& x;
-    T& y;
+    T x;
+    T y;
 
-private:
-    std::array<T, 2> _a;
 };
 
 

@@ -8,7 +8,7 @@
 class Camera
 {
 public:
-    Camera(Vec3d position, Vec3d view, const Vec3d& up, Vec2i resolution, double fov, double aspect);
+    Camera(Vec3d position, const Vec3d& view, const Vec3d& up, Vec2i resolution, double fov, double aspect);
 
     std::vector<Ray> rays() const;
 

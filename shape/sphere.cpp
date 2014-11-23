@@ -1,7 +1,10 @@
+#include <MacTypes.h>
 #include "sphere.h"
 #include "../ray.h"
 #include "../intersection.h"
 #include "../shader/ishader.h"
+#include <cmath>
+
 
 Sphere::Sphere(Vec3d origin, double radius, IShader * material)
         : _origin(std::move(origin))
@@ -12,14 +15,24 @@ Sphere::Sphere(Vec3d origin, double radius, IShader * material)
 
 double Sphere::intersect(const Ray &ray) const {
 
-    Vec3d o = ray.origin();
-    Vec3d d = ray.direction();
+    const Vec3d& o = ray.origin();
+    const Vec3d& d = ray.direction();
+
+    double dx = d.x;
+    double dy = d.y;
+    double dz = d.z;
+    double ox = o.x;
+    double oy = o.y;
+    double oz = o.z;
+    double orx = _origin.x;
+    double ory = _origin.y;
+    double orz = _origin.z;
 
     const double a = 1;
-    double b = 2 * (d[0] *(o[0] - _origin[0]) + d[1] * (o[1] - _origin[1]) + d[2] * (o[2] - _origin[2]));
-    double c = (o[0] - _origin[0]) * (o[0] - _origin[0]) +
-            (o[1] - _origin[1]) * (o[1] - _origin[1]) +
-            (o[2] - _origin[2]) * (o[2] - _origin[2]) -
+    double b = 2 * (dx *(ox - orx) + dy * (oy - ory) + dz * (oz - orz));
+    double c = (ox - orx) * (ox - orx) +
+            (oy - ory) * (oy - ory) +
+            (oz - orz) * (oz - orz) -
             _radius * _radius;
 
     double discriminant = b * b - 4 * a * c;
@@ -38,8 +51,15 @@ double Sphere::intersect(const Ray &ray) const {
 void Sphere::populate_intersection(Intersection &intersection) const {
     assert(intersection.t() >= 0);
     double inv_radius = 1 / _radius;
-    intersection.normal((intersection.point() - _origin) * inv_radius);
+    Vec3d normal = (intersection.point() - _origin) * inv_radius;
+    intersection.normal(normal);
     intersection.shape(this);
+
+    Vec3d d = -normal;
+    Vec2d uv(0.5 + atan2(d.z, d.x)/(2 * M_PI),
+            0.5 - asin(d.y) / M_PI);
+
+    intersection.uv(uv * 8);
 }
 
 IShader * Sphere::material() const {
