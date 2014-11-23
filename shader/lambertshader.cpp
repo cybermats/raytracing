@@ -1,9 +1,10 @@
 #include "lambertshader.h"
 
 Color LambertShader::shade(const Intersection &intersection, std::vector<Ray>& secondaryRays) const {
+    assert(_material);
     Color output(0, 0, 0, 0);
     Color materialColor = _material->shade(intersection);
-    for(const auto& light : _scene->lights())
+    for(const auto& light : _scene.lights())
     {
         Color lightColor = light->shade(intersection.point());
         Vec3d direction = light->direction(intersection.point());
@@ -12,4 +13,8 @@ Color LambertShader::shade(const Intersection &intersection, std::vector<Ray>& s
     }
     output.a = 1.0;
     return output;
+}
+
+void LambertShader::initialize() {
+    _material = _scene.get_material(_colorName);
 }

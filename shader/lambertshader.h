@@ -13,19 +13,23 @@ class LambertShader : public IShader
 {
 public:
 
-    LambertShader(Scene* scene, IMaterial* material, double coefficient)
+    LambertShader(const Scene& scene, const std::string& colorName, double coefficient)
             : _scene(scene)
-            , _material(material)
-            , _coefficient(coefficient) {
-    }
+            , _colorName(colorName)
+            , _coefficient(coefficient)
+            , _material(nullptr)
+    {}
 
     virtual Color shade(const Intersection &intersection, std::vector<Ray>& secondaryRays) const override;
 
 
+    virtual void initialize() override;
+
 private:
-    Scene* _scene;
-    IMaterial* _material;
+    const Scene& _scene;
+    std::string _colorName;
     double _coefficient;
 
+    const IMaterial* _material;
 };
 

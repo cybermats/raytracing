@@ -3,13 +3,15 @@
 #include "../ray.h"
 #include "../intersection.h"
 #include "../shader/ishader.h"
+#include "../scene.h"
 #include <cmath>
 
 
-Sphere::Sphere(Vec3d origin, double radius, IShader * material)
+Sphere::Sphere(Vec3d origin, double radius, const std::string& shaderName)
         : _origin(std::move(origin))
         , _radius(radius)
-        , _material(material)
+        , _shaderName(shaderName)
+        , _shader(nullptr)
 {}
 
 
@@ -59,9 +61,14 @@ void Sphere::populate_intersection(Intersection &intersection) const {
     Vec2d uv(0.5 + atan2(d.z, d.x)/(2 * M_PI),
             0.5 - asin(d.y) / M_PI);
 
-    intersection.uv(uv * 8);
+    intersection.uv(uv);
 }
 
-IShader * Sphere::material() const {
-    return _material;
+const IShader * Sphere::shader() const {
+    assert(_shader);
+    return _shader;
+}
+
+void Sphere::initialize(const Scene &scene) {
+    _shader = scene.get_shader(_shaderName);
 }

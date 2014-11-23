@@ -3,9 +3,13 @@
 #include "shape/ishape.h"
 #include "intersection.h"
 #include "ilightsource.h"
+#include "shader/imaterial.h"
+#include "shader/ishader.h"
 
 #include <memory>
 #include <vector>
+#include <map>
+#include <iostream>
 
 class Scene
 {
@@ -20,44 +24,49 @@ public:
         _lights.push_back(std::move(light));
     }
 
-    std::unique_ptr<Intersection> intersect(const Ray& ray) const
+    void add_shader(const std::string& name, std::unique_ptr<IShader> shader)
     {
-        IShape* nearestHit = nullptr;
-        double t_min = std::numeric_limits<double>::max();
-        for(auto const& shape : _shapes)
-        {
-            double t = shape->intersect(ray);
-            if(t < 0)
-                continue;
-            if(t > t_min)
-                continue;
-            t_min = t;
-            nearestHit = shape.get();
-        }
-
-        if(nearestHit)
-        {
-            auto inter = new Intersection(ray, t_min);
-            nearestHit->populate_intersection(*inter);
-            return std::unique_ptr<Intersection>(inter);
-        }
-        return nullptr;
+        assert(_shaders.find(name) == _shaders.end());
+        _shaders[name] = std::move(shader);
     }
 
-    bool hit(const Ray& ray, double length) const
+    void add_material(const std::string& name, std::unique_ptr<IMaterial> material)
     {
-        double t_min = std::numeric_limits<double>::max();
-        for(auto const& shape : _shapes)
-        {
-            double t = shape->intersect(ray);
-            if(t < 0)
-                continue;
-            if(t > t_min)
-                continue;
-            t_min = t;
-        }
-        return t_min < length;
+        assert(_materials.find(name) == _materials.end());
+        _materials[name] = std::move(material);
     }
+
+    const IShader* get_shader(const std::string& name) const
+    {
+        std::cout << "Resolving shader: " << name << std::endl;
+        const auto& it = _shaders.find(name);
+        assert(it != _shaders.end());
+        return it->second.get();
+    }
+
+    const IMaterial* get_material(const std::string& name) const
+    {
+        std::cout << "Resolving material: " << name << std::endl;
+        const auto& it = _materials.find(name);
+        assert(it != _materials.end());
+        return it->second.get();
+    }
+
+    void initialize()
+    {
+        for(auto& material : _materials)
+            material.second->initialize(*this);
+
+        for(auto& shader : _shaders)
+            shader.second->initialize();
+
+        for(auto& shape : _shapes)
+            shape->initialize(*this);
+    }
+
+    std::unique_ptr<Intersection> intersect(const Ray& ray) const;
+
+    bool hit(const Ray& ray, double length) const;
 
     const std::vector<std::unique_ptr<ILightSource>>& lights() const
     {
@@ -68,4 +77,7 @@ public:
 private:
     std::vector<std::unique_ptr<IShape>> _shapes;
     std::vector<std::unique_ptr<ILightSource>> _lights;
+    std::map<std::string, std::unique_ptr<IShader>> _shaders;
+    std::map<std::string, std::unique_ptr<IMaterial>> _materials;
+
 };

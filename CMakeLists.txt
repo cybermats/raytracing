@@ -21,6 +21,7 @@ set(SOURCE_FILES
     pointlight.cpp
     color.cpp
     supersampler.cpp
+    scene.cpp
     lodepng.cpp
 )
 add_executable(raytracing main.cpp ${SOURCE_FILES})

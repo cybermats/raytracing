@@ -16,7 +16,9 @@ public:
         return _color;
     }
 
+
+    virtual void initialize(const Scene &scene) override {}
+
 private:
     Color _color;
 };
-

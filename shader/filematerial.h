@@ -15,6 +15,8 @@ public:
     FileMaterial(const std::string& filename);
 
     virtual Color shade(const Intersection &intersection) const override;
+    virtual void initialize(const Scene &scene) override {}
+
 private:
     std::unique_ptr<ImageBuffer> _buffer;
 };

@@ -23,7 +23,8 @@ void ImageWriter::savePNG(const std::string &filename) const {
         }
     }
 
-    lodepng::encode(filename, localBuffer, _buffer->width(), _buffer->height());
+    unsigned int error = lodepng::encode(filename, localBuffer, _buffer->width(), _buffer->height());
+    assert(error == 0);
 
 
 }

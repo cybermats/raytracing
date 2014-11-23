@@ -33,14 +33,14 @@ public:
         assert(similar(length(_direction), 1.0));
     }
 
-    Ray(const Ray& original, Vec3d origin, Vec3d direction)
+    Ray(const Ray& original, Vec3d origin, Vec3d direction, Color importance)
             : _origin(std::move(origin))
             , _direction(std::move(direction))
             , _pixel(original._pixel)
             , _dU(original._dU)
             , _dV(original._dV)
             , _life(original._life - 1)
-            , _importance(original._importance)
+            , _importance(importance)
     {}
 
 

@@ -9,22 +9,33 @@ class Scene;
 class BlinnShader : public IShader
 {
 public:
-    BlinnShader(Scene *scene, IMaterial *diffuseMaterial, IMaterial *specularMaterial, double diffuse, double specular, double alpha)
-            : _scene(scene),
-              _diffuseMaterial(diffuseMaterial),
-              _specularMaterial(specularMaterial),
-              _specular(specular),
-              _diffuse(diffuse),
-              _alpha(alpha)
+    BlinnShader(const Scene &scene, const std::string& diffuseMaterialName, const std::string& specularMaterialName,
+            double diffuse, double specular, double alpha, double reflectiveness)
+            : _scene(scene)
+            , _diffuseMaterialName(diffuseMaterialName)
+            , _specularMaterialName(specularMaterialName)
+            , _specular(specular)
+            , _diffuse(diffuse)
+            , _alpha(alpha)
+            , _reflectiveness(reflectiveness)
+            , _diffuseMaterial(nullptr)
+            , _specularMaterial(nullptr)
     {}
 
     virtual Color shade(const Intersection &intersection, std::vector<Ray> &secondaryRays) const override;
+
+
+    virtual void initialize() override;
+
 private:
-    Scene* _scene;
-    IMaterial* _diffuseMaterial;
-    IMaterial* _specularMaterial;
+    const Scene& _scene;
+    std::string _diffuseMaterialName;
+    std::string _specularMaterialName;
     double _diffuse;
     double _specular;
     double _alpha;
+    double _reflectiveness;
+    const IMaterial* _diffuseMaterial;
+    const IMaterial* _specularMaterial;
 };
 

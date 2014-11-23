@@ -6,6 +6,9 @@
 
 
 Color PhongShader::shade(const Intersection &intersection, std::vector<Ray> &secondaryRays) const {
+    assert(_diffuseMaterial);
+    assert(_specularMaterial);
+
     Color output(0, 0, 0, 0);
     Color diffuseColor = _diffuseMaterial->shade(intersection);
     Color specularColor = _specularMaterial->shade(intersection);

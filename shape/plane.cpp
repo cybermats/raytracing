@@ -1,11 +1,14 @@
 #include "plane.h"
 #include "../shader/ishader.h"
+#include "../scene.h"
 
 
-
-Plane::Plane(Vec3d normal, double location, IShader *material)
-: _normal(normal), _location(location), _material(material) {
-}
+Plane::Plane(Vec3d normal, double location, const std::string& shaderName)
+        : _normal(normal)
+        , _location(location)
+        , _shaderName(shaderName)
+        , _shader(nullptr)
+{}
 
 double Plane::intersect(const Ray &ray) const {
     float nDotO = dot(_normal, ray.origin());
@@ -30,6 +33,11 @@ void Plane::populate_intersection(Intersection &intersection) const {
     intersection.uv(uv);
 }
 
-IShader *Plane::material() const {
-    return _material;
+const IShader *Plane::shader() const {
+    assert(_shader);
+    return _shader;
+}
+
+void Plane::initialize(const Scene &scene) {
+    _shader = scene.get_shader(_shaderName);
 }

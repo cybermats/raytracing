@@ -9,8 +9,9 @@ Color MirrorShader::shade(const Intersection &intersection, std::vector<Ray> &se
         const Vec3d& n = intersection.normal();
         const Vec3d& d = ray.direction();
         Vec3d reflectionDir = reflect(d, n);
-        Ray reflectionRay(ray, intersection.point() + 0.000001 * reflectionDir, reflectionDir);
+        Ray reflectionRay(ray, intersection.point() + 0.000001 * reflectionDir, reflectionDir, ray.importance());
         secondaryRays.push_back(reflectionRay);
     }
     return Color::Black;
 }
+

@@ -9,8 +9,12 @@
 class CheckerMaterial : public IMaterial
 {
 public:
-    CheckerMaterial(IMaterial const &color1, IMaterial const &color2) : _color1(color1), _color2(color2) {
-    }
+    CheckerMaterial(std::string const &color1Name, std::string const &color2Name)
+            : _color1Name(color1Name)
+            , _color2Name(color2Name)
+            , _color1(nullptr)
+            , _color2(nullptr)
+    {}
 
     virtual Color shade(const Intersection &intersection) const override {
         Vec2d uv = intersection.uv();
@@ -22,13 +26,23 @@ public:
             vf++;
 
         if(uf < 0.5 == vf < 0.5)
-            return _color1.shade(intersection);
+            return _color1->shade(intersection);
         else
-            return _color2.shade(intersection);
+            return _color2->shade(intersection);
     }
 
+    virtual void initialize(const Scene &scene) override
+    {
+        _color1 = scene.get_material(_color1Name);
+        _color2 = scene.get_material(_color2Name);
+    }
+
+
 private:
-    const IMaterial& _color1;
-    const IMaterial& _color2;
+    std::string _color1Name;
+    std::string _color2Name;
+
+    const IMaterial* _color1;
+    const IMaterial* _color2;
 };
 
