@@ -10,15 +10,23 @@ public:
             : _name(name)
             , _start(start)
             , _finish(finish)
-            , _reportStep(reportStep)
+            , _reportStep(std::max(1, reportStep))
             , _current(start)
     {
     }
 
     void progress()
     {
+
         if((++_current % _reportStep) == 0)
-            std::cout << _name << " : " << 100 * (_current - _start)/((double)(_finish - _start)) << "%" << std::endl;
+        {
+            double num = _current - _start;
+            double den = _finish - _start;
+            if(den == 0)
+                den = 1;
+            std::cout << _name << " : " << 100 * num / den << "%" << std::endl;
+
+        }
     }
 
 private:

@@ -1,6 +1,6 @@
 #include "camera.h"
 
-Camera::Camera(Vec3d position, const Vec3d& view, const Vec3d& up, Vec2i resolution, double fov, double aspect)
+Camera::Camera(Vec3d position, const Vec3d& view, const Vec3d& up, Vec2us resolution, double fov, double aspect)
 : _position(std::move(position))
 , _u(normalize(cross(view, up)))
 , _v(normalize(cross(_u, view)))
@@ -9,12 +9,12 @@ Camera::Camera(Vec3d position, const Vec3d& view, const Vec3d& up, Vec2i resolut
 , _fov(fov)
 , _aspect(aspect)
 , _dX(2 * tan(_fov/2)/_resolution.x)
-, _dY(2 * tan((_fov/_aspect)/2)/_resolution.y)
+, _dY(2 * (tan(_fov/2)/_aspect)/_resolution.y)
 {}
 
 std::vector<Ray> Camera::rays() const
 {
-    Vec3d scanlineStart = //_position +
+    Vec3d scanLineStart = //_position +
             _w -
             (_resolution.x/2) * _dX * _u +
             (_resolution.y/2) * _dY * _v +
@@ -27,11 +27,11 @@ std::vector<Ray> Camera::rays() const
 
     Vec3d dU = _dX * _u;
     Vec3d dV = _dY * _v;
-    Vec2i pixel(0, 0);
+    Vec2us pixel(0, 0);
 
     for(int y = 0; y < _resolution.y; ++y)
     {
-        Vec3d pixelCenter = scanlineStart;
+        Vec3d pixelCenter = scanLineStart;
 
         for(int x = 0; x < _resolution.x; ++x)
         {
@@ -41,7 +41,7 @@ std::vector<Ray> Camera::rays() const
             pixelCenter += dU;
             pixel.x++;
         }
-        scanlineStart -= dV;
+        scanLineStart -= dV;
         pixel.y++;
         pixel.x = 0;
     }

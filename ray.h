@@ -9,13 +9,13 @@
 class Ray
 {
 public:
-    Ray(Vec3d origin, Vec3d direction, Vec2i pixel, Vec3d dU, Vec3d dV, Color importance)
+    Ray(Vec3d origin, Vec3d direction, Vec2us pixel, Vec3d dU, Vec3d dV, Color importance)
             : _origin(std::move(origin))
             , _direction(std::move(direction))
             , _pixel(pixel)
+            , _life(4)
             , _dU(dU)
             , _dV(dV)
-            , _life(4)
             , _importance(importance)
     {
         assert(similar(length(_direction), 1.0));
@@ -25,9 +25,9 @@ public:
             : _origin(std::move(origin))
             , _direction(std::move(direction))
             , _pixel(0, 0)
+            , _life(4)
             , _dU(0, 0, 0)
             , _dV(0, 0, 0)
-            , _life(4)
             , _importance(Color::White)
     {
         assert(similar(length(_direction), 1.0));
@@ -37,9 +37,9 @@ public:
             : _origin(std::move(origin))
             , _direction(std::move(direction))
             , _pixel(original._pixel)
+            , _life(original._life - 1)
             , _dU(original._dU)
             , _dV(original._dV)
-            , _life(original._life - 1)
             , _importance(importance)
     {}
 
@@ -54,11 +54,11 @@ public:
         return _direction;
     }
 
-    const inline Vec2i& pixel() const {
+    const inline Vec2us& pixel() const {
         return _pixel;
     }
 
-    size_t inline life() const {
+    unsigned int inline life() const {
         return _life;
     }
 
@@ -77,7 +77,14 @@ public:
 
     friend std::ostream& operator<<(std::ostream& stream, const Ray& r)
     {
-        stream << "Ray(origin: " << r._origin << ", direction: " << r._direction << ", pixel: " << r._pixel << ")";
+        stream << "Ray(origin: " << r._origin
+                << ", direction: " << r._direction
+                << ", pixel: " << r._pixel
+                << ", life: " << r._life
+                << ", dU: " << r._dU
+                << ", dV: " << r._dV
+                << ", importance: " << r._importance
+                << ")";
         return stream;
     }
 
@@ -86,10 +93,10 @@ private:
     Vec3d _origin;
     Vec3d _direction;
 
-    Vec2i _pixel;
+    Vec2us _pixel;
+    unsigned int _life;
     Vec3d _dU;
     Vec3d _dV;
-    size_t _life;
 
     Color _importance;
 };

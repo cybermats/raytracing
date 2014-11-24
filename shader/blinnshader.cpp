@@ -33,10 +33,10 @@ Color BlinnShader::shade(const Intersection &intersection, std::vector<Ray> &sec
                 output += diffuseShading * (1 - _reflectiveness);
             }
 
-            double hDotn = dot(halfWay, normal);
-            if(hDotn > 0)
+            double hDotN = dot(halfWay, normal);
+            if(hDotN > 0)
             {
-                double dot = pow(hDotn, _alpha);
+                double dot = pow(hDotN, _alpha);
                 Color specularShading = specularColor * lightColor * _specular * dot;
                 output += specularShading * (1 - _reflectiveness);
             }
@@ -44,7 +44,7 @@ Color BlinnShader::shade(const Intersection &intersection, std::vector<Ray> &sec
     }
     if(_reflectiveness > 0)
     {
-        if(intersection.ray().life())
+        if(intersection.ray().life() > 0)
         {
             Vec3d reflectionDir = reflect(direction, normal);
             Ray reflectionRay(ray, point + 0.000001 * reflectionDir, reflectionDir, ray.importance() * _reflectiveness);

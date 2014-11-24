@@ -9,6 +9,7 @@ class Ray;
 class IShader
 {
 public:
+    virtual ~IShader();
     virtual Color shade(const Intersection& intersection, std::vector<Ray>& secondaryRays) const = 0;
     virtual void initialize() = 0;
 };

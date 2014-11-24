@@ -62,19 +62,11 @@ public:
     Vec()
     {}
 
-    Vec(T x, T y, T z)
-            : x(x)
-            , y(y)
-            , z(z)
+    Vec(T vx, T vy, T vz)
+            : x(vx)
+            , y(vy)
+            , z(vz)
     {}
-
-    Vec& operator=(Vec other)
-    {
-        x = other.x;
-        y = other.y;
-        z = other.z;
-        return *this;
-    }
 
     T& operator[](size_t idx) {
         assert(idx < 3);
@@ -122,9 +114,9 @@ public:
     Vec()
     {}
 
-    Vec(T x, T y)
-            : x(x)
-            , y(y)
+    Vec(T vx, T vy)
+            : x(vx)
+            , y(vy)
     {}
 
     inline T& operator[](size_t idx) {
@@ -164,4 +156,6 @@ public:
 
 using Vec3d = Vec<3, double>;
 using Vec2i = Vec<2, int>;
+using Vec2us = Vec<2, unsigned short>;
+using Vec2ul = Vec<2, unsigned long>;
 using Vec2d = Vec<2, double>;

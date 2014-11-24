@@ -11,8 +11,8 @@ Plane::Plane(Vec3d normal, double location, const std::string& shaderName)
 {}
 
 double Plane::intersect(const Ray &ray) const {
-    float nDotO = dot(_normal, ray.origin());
-    float nDotD = dot(_normal, ray.direction());
+    double nDotO = dot(_normal, ray.origin());
+    double nDotD = dot(_normal, ray.direction());
 
     return (_location - nDotO)/nDotD;
 }

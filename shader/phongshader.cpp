@@ -5,7 +5,7 @@
 #include "../color.h"
 
 
-Color PhongShader::shade(const Intersection &intersection, std::vector<Ray> &secondaryRays) const {
+Color PhongShader::shade(const Intersection &intersection, std::vector<Ray> &) const {
     assert(_diffuseMaterial);
     assert(_specularMaterial);
 

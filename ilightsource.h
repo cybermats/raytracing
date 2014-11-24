@@ -7,6 +7,7 @@
 class ILightSource
 {
 public:
+    virtual ~ILightSource();
     virtual Color color() const = 0;
     virtual Vec3d direction(const Vec3d& point) const = 0;
     virtual Color shade(const Vec3d& point) const = 0;

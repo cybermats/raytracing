@@ -10,6 +10,8 @@ class Scene;
 
 class IShape {
 public:
+    virtual ~IShape();
+
     virtual double intersect(const Ray &ray) const = 0;
     virtual void populate_intersection(Intersection &intersection) const = 0;
     virtual const IShader* shader() const = 0;

@@ -12,7 +12,6 @@ void ImageWriter::savePNG(const std::string &filename) const {
     std::vector<unsigned char> localBuffer;
     localBuffer.reserve(_buffer->width() * _buffer->height() * 4);
 
-    std::size_t pos = 0;
     for(const auto& color : *_buffer)
     {
         for(size_t i = 0; i < 4; ++i)

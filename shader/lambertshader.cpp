@@ -1,6 +1,6 @@
 #include "lambertshader.h"
 
-Color LambertShader::shade(const Intersection &intersection, std::vector<Ray>& secondaryRays) const {
+Color LambertShader::shade(const Intersection &intersection, std::vector<Ray>&) const {
     assert(_material);
     Color output(0, 0, 0, 0);
     Color materialColor = _material->shade(intersection);

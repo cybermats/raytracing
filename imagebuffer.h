@@ -8,42 +8,42 @@
 class ImageBuffer
 {
 public:
-    ImageBuffer(int width, int height)
-            : _resolution(width, height)
-            , _buffer(_resolution.x * _resolution.y, Color(0, 0, 0, 0))
+    ImageBuffer(unsigned short width, unsigned short height)
+            : _buffer(width * height, Color(0, 0, 0, 0))
+            , _resolution(width, height)
     {}
 
-    ImageBuffer(Vec2i resolution)
-            : _resolution(resolution)
-            , _buffer(_resolution.x * _resolution.y, Color(0, 0, 0, 0))
+    ImageBuffer(Vec2us resolution)
+            : _buffer(resolution.x * resolution.y, Color(0, 0, 0, 0))
+            , _resolution(resolution)
     {}
 
-    void setPixel(const Color& color, const Vec2i& pixel)
+    void setPixel(const Color& color, const Vec2us& pixel)
     {
         _buffer[_resolution.x * pixel.y + pixel.x] = color;
     }
 
-    void addPixel(const Color& color, const Vec2i& pixel)
+    void addPixel(const Color& color, const Vec2us& pixel)
     {
         _buffer[_resolution.x * pixel.y + pixel.x] += color;
     }
 
-    inline Color& operator()(int x, int y)
+    inline Color& operator()(unsigned short x, unsigned short y)
     {
         return _buffer[_resolution.x * y + x];
     }
 
-    inline const Color& operator()(int x, int y) const
+    inline const Color& operator()(unsigned short x, unsigned short y) const
     {
         return _buffer[_resolution.x * y + x];
     }
 
-    int height() const
+    unsigned short height() const
     {
         return _resolution.y;
     }
 
-    int width() const
+    unsigned short width() const
     {
         return _resolution.x;
     }
@@ -149,6 +149,6 @@ public:
     }
 
 private:
-    Vec2i _resolution;
     std::vector<Color> _buffer;
+    Vec2us _resolution;
 };

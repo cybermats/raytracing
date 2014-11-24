@@ -16,18 +16,18 @@ struct Color
 
     Color() {}
 
-    Color(double r, double g, double b)
-            : r(r)
-            , g(g)
-            , b(b)
+    Color(double cr, double cg, double cb)
+            : r(cr)
+            , g(cg)
+            , b(cb)
             , a(1)
     {}
 
-    Color(double r, double g, double b, double a)
-            : r(r)
-            , g(g)
-            , b(b)
-            , a(a)
+    Color(double cr, double cg, double cb, double ca)
+            : r(cr)
+            , g(cg)
+            , b(cb)
+            , a(ca)
     {}
 
     Color(const Vec3d& vec)
@@ -105,3 +105,14 @@ inline bool operator!=(const Color& l, const Color& r)
 {
     return !(l.r == r.r && l.g == r.g && l.b == r.b && l.a == r.a);
 }
+
+inline std::ostream& operator<<(std::ostream& stream, const Color& c)
+{
+    stream << "Color(r: " << c.r
+            << ", g: " << c.g
+            << ", b: " << c.b
+            << ", a: " << c.a
+            << ")";
+    return stream;
+}
+

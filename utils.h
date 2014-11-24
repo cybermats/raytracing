@@ -17,11 +17,11 @@ inline bool similar(double A, double B, int maxUlps = 10)
     long aInt = *(long*)&A;
     // Make aInt lexicographically ordered as a twos-complement int
     if (aInt < 0)
-        aInt = 0x8000000000000000 - aInt;
+        aInt = 0x8000000000000000L - aInt;
     // Make bInt lexicographically ordered as a twos-complement int
     long bInt = *(long*)&B;
     if (bInt < 0)
-        bInt = 0x8000000000000000 - bInt;
+        bInt = 0x8000000000000000L - bInt;
 
     // Now we can compare aInt and bInt to find out how far apart A and B
     // are.

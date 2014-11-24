@@ -13,7 +13,7 @@ std::unique_ptr<ImageBuffer> ImageReader::readPNG(const std::string& filename)
     unsigned int error = lodepng::decode(buffer, width, height, filename);
     std::cout << "Error: " << error << std::endl;
     assert(error == 0);
-    auto image = make_unique<ImageBuffer>(width, height);
+    auto image = make_unique<ImageBuffer>((unsigned short)width, (unsigned short)height);
 
     auto iit = buffer.cbegin();
     auto oit = image->begin();

@@ -5,6 +5,7 @@
 #include "staticcolormaterial.h"
 
 #include "../intersection.h"
+#include "../scene.h"
 
 class CheckerMaterial : public IMaterial
 {
@@ -15,6 +16,7 @@ public:
             , _color1(nullptr)
             , _color2(nullptr)
     {}
+    virtual ~CheckerMaterial();
 
     virtual Color shade(const Intersection &intersection) const override {
         Vec2d uv = intersection.uv();

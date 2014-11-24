@@ -24,6 +24,69 @@
 
 #include <iostream>
 
+void setupBox(Scene& scene);
+void setupSpheres(Scene& scene);
+
+
+
+int main()
+{
+    unsigned short width = 800;
+    unsigned short height = 600;
+    double fov = M_PI/2;
+    double aspect = width/(double)height;
+    Vec2us resolution(width, height);
+
+    auto buffer = std::make_shared<ImageBuffer>(resolution);
+
+    Vec3d camPos(0, 0, 1.95);
+    Vec3d camView(0, 0, -1);
+    Vec3d camUp(0, 1, 0);
+
+    Camera camera(camPos, camView, camUp, resolution, fov, aspect);
+    SuperSampler sampler(4, true);
+    auto camRays = camera.rays();
+    auto primaryRays = sampler.generate(camRays);
+//    auto primaryRays = camRays;
+
+    Scene scene;
+//    setupSpheres(scene);
+    setupBox(scene);
+
+    std::cout << "Initializing" << std::endl;
+    scene.initialize();
+
+    std::vector<Ray> secondaryRays(std::move(primaryRays));
+
+    int count = 1;
+    while(!secondaryRays.empty())
+    {
+        std::cout << "Starting pass: " << count << ", size: " << secondaryRays.size() << std::endl;
+        ProgressLog progress("Pass [" + std::to_string(count) + "]", 0, secondaryRays.size(), secondaryRays.size() / 10);
+        std::vector<Ray> rays(std::move(secondaryRays));
+        for(auto& ray : rays)
+        {
+            progress.progress();
+
+            auto intersection = scene.intersect(ray);
+
+            if(!intersection)
+                continue;
+            Color c = intersection->shape()->shader()->shade(*intersection, secondaryRays) * ray.importance();
+            buffer->addPixel(c, intersection->ray().pixel());
+        }
+        std::cout << "Ending pass: " << count << std::endl;
+        count++;
+    }
+
+
+    ImageWriter writer(buffer);
+    std::cout << "Writing file" << std::endl;
+    writer.savePNG("/Users/mats/Documents/raytracing/foo.png");
+
+
+    return 0;
+}
 
 void setupBox(Scene& scene)
 {
@@ -44,9 +107,10 @@ void setupBox(Scene& scene)
     scene.add_shape(make_unique<Plane>(Vec3d(1, 0, 0), -1, "LambertGreen"));
     scene.add_shape(make_unique<Plane>(Vec3d(-1, 0, 0), -1, "LambertRed"));
     scene.add_shape(make_unique<Plane>(Vec3d(0, 0, 1), -1, "LambertWhite"));
+    scene.add_shape(make_unique<Plane>(Vec3d(0, 0, -1), -2, "LambertWhite"));
 
     scene.add_shape(make_unique<Sphere>(Vec3d(-0.4, -0.7, -0.4), 0.3, "Mirror"));
-    scene.add_shape(make_unique<Sphere>(Vec3d(0.4, -0.7, 0.4), 0.3, "Mirror"));
+    scene.add_shape(make_unique<Sphere>(Vec3d(0.4, -0.7, 0.0), 0.3, "Mirror"));
 
 
     scene.add_light(make_unique<PointLight>(&scene, Vec3d(0, 0.95, 0), Color::White));
@@ -84,59 +148,4 @@ void setupSpheres(Scene& scene)
     scene.add_shape(make_unique<Sphere>(Vec3d(0, 0, -2), 1, "LambertBlue"));
     scene.add_shape(make_unique<Plane>(Vec3d(0, 1, 0), -1, "Mirror"));
 
-}
-
-int main()
-{
-    int width = 800;
-    int height = 600;
-    double fov = M_PI/4;
-    double aspect = width/(double)height;
-    Vec2i resolution(width, height);
-
-    auto buffer = std::make_shared<ImageBuffer>(resolution);
-
-    Vec3d camPos(0, 0, 5);
-    Vec3d camView(0, 0, -1);
-    Vec3d camUp(0, 1, 0);
-
-    Camera camera(camPos, camView, camUp, resolution, fov, aspect);
-    SuperSampler sampler(1, true);
-    auto camRays = camera.rays();
-//    auto primaryRays = sampler.generate(camRays);
-    auto primaryRays = camRays;
-
-    Scene scene;
-//    setupSpheres(scene);
-    setupBox(scene);
-
-    std::cout << "Initializing" << std::endl;
-    scene.initialize();
-
-    std::vector<Ray> secondaryRays(std::move(primaryRays));
-
-    int count = 1;
-    while(!secondaryRays.empty())
-    {
-        ProgressLog progress("Pass [" + std::to_string(count) + "]", 0, secondaryRays.size(), secondaryRays.size() / 10);
-        std::vector<Ray> rays(std::move(secondaryRays));
-        for(auto& ray : rays)
-        {
-            auto intersection = scene.intersect(ray);
-            if(!intersection)
-                continue;
-            Color c = intersection->shape()->shader()->shade(*intersection, secondaryRays) * ray.importance();
-            buffer->addPixel(c, intersection->ray().pixel());
-            progress.progress();
-        }
-        count++;
-    }
-
-
-    ImageWriter writer(buffer);
-    std::cout << "Writing file" << std::endl;
-    writer.savePNG("/Users/mats/Documents/raytracing/foo.png");
-
-
-    return 0;
 }
