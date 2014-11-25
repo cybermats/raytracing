@@ -17,6 +17,7 @@ set(SOURCE_FILES
     shader/phongshader.cpp
     shader/blinnshader.cpp
     shader/filematerial.cpp
+    shader/glassshader.cpp
     imagewriter.cpp
     imagereader.cpp
     camera.cpp

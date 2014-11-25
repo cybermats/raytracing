@@ -10,6 +10,7 @@
 #include "shader/ishader.h"
 #include "shader/lambertshader.h"
 #include "shader/mirrorshader.h"
+#include "shader/glassshader.h"
 #include "shader/checkermaterial.h"
 #include "shader/staticcolormaterial.h"
 #include "shader/phongshader.h"
@@ -44,10 +45,10 @@ int main()
     Vec3d camUp(0, 1, 0);
 
     Camera camera(camPos, camView, camUp, resolution, fov, aspect);
-    SuperSampler sampler(4, true);
+    SuperSampler sampler(8, true);
     auto camRays = camera.rays();
-    auto primaryRays = sampler.generate(camRays);
-//    auto primaryRays = camRays;
+//    auto primaryRays = sampler.generate(camRays);
+    auto primaryRays = camRays;
 
     Scene scene;
 //    setupSpheres(scene);
@@ -101,6 +102,7 @@ void setupBox(Scene& scene)
     scene.add_shader("LambertGreen", make_unique<LambertShader>(scene, "GreenColor", 1));
 
     scene.add_shader("Mirror", make_unique<BlinnShader>(scene, "WhiteColor", "WhiteColor", 0.0, 0.0, 100, 1));
+    scene.add_shader("Glass", make_unique<GlassShader>(1.0, 1.0));
 
     scene.add_shape(make_unique<Plane>(Vec3d(0, 1, 0), -1, "LambertWhite"));
     scene.add_shape(make_unique<Plane>(Vec3d(0, -1, 0), -1, "LambertWhite"));
@@ -110,7 +112,7 @@ void setupBox(Scene& scene)
     scene.add_shape(make_unique<Plane>(Vec3d(0, 0, -1), -2, "LambertWhite"));
 
     scene.add_shape(make_unique<Sphere>(Vec3d(-0.4, -0.7, -0.4), 0.3, "Mirror"));
-    scene.add_shape(make_unique<Sphere>(Vec3d(0.4, -0.7, 0.0), 0.3, "Mirror"));
+    scene.add_shape(make_unique<Sphere>(Vec3d(0.4, -0.7, 0.0), 0.3, "Glass"));
 
 
     scene.add_light(make_unique<PointLight>(&scene, Vec3d(0, 0.95, 0), Color::White));
