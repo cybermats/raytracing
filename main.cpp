@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES
 
 #include "vector.h"
 #include "vecmath.h"
@@ -21,6 +22,7 @@
 #include "pointlight.h"
 #include "progresslog.h"
 #include "utils.h"
+
 #include <cmath>
 
 #include <iostream>
@@ -30,8 +32,15 @@ void setupSpheres(Scene& scene);
 
 
 
-int main()
+int main(int argc, char** argv)
 {
+	if (argc < 2)
+	{
+		std::cout << "No filepath given" << std::endl;
+		return -1;
+	}
+	std::string filename = argv[1];
+
     unsigned short width = 800;
     unsigned short height = 600;
     double fov = M_PI/2;
@@ -45,7 +54,7 @@ int main()
     Vec3d camUp(0, 1, 0);
 
     Camera camera(camPos, camView, camUp, resolution, fov, aspect);
-    SuperSampler sampler(8, true);
+    SuperSampler sampler(3, true);
     auto camRays = camera.rays();
 //    auto primaryRays = sampler.generate(camRays);
     auto primaryRays = camRays;
@@ -83,7 +92,7 @@ int main()
 
     ImageWriter writer(buffer);
     std::cout << "Writing file" << std::endl;
-    writer.savePNG("/Users/mats/Documents/raytracing/foo.png");
+	writer.savePNG(filename);
 
 
     return 0;
@@ -102,7 +111,7 @@ void setupBox(Scene& scene)
     scene.add_shader("LambertGreen", make_unique<LambertShader>(scene, "GreenColor", 1));
 
     scene.add_shader("Mirror", make_unique<BlinnShader>(scene, "WhiteColor", "WhiteColor", 0.0, 0.0, 100, 1));
-    scene.add_shader("Glass", make_unique<GlassShader>(1.0, 1.0));
+    scene.add_shader("Glass", make_unique<GlassShader>(1.0, 1.5));
 
     scene.add_shape(make_unique<Plane>(Vec3d(0, 1, 0), -1, "LambertWhite"));
     scene.add_shape(make_unique<Plane>(Vec3d(0, -1, 0), -1, "LambertWhite"));

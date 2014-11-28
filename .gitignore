@@ -26,3 +26,12 @@
 *.exe
 *.out
 *.app
+
+# Visual Studio stuff
+Debug
+ipch
+Release/*
+raytracing.sdf
+raytracing.opensdf
+raytracing.vcxproj.user
+*.suo

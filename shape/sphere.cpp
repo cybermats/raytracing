@@ -1,9 +1,11 @@
-#include <MacTypes.h>
+#define _USE_MATH_DEFINES
+
 #include "sphere.h"
 #include "../ray.h"
 #include "../intersection.h"
 #include "../shader/ishader.h"
 #include "../scene.h"
+
 #include <cmath>
 
 
